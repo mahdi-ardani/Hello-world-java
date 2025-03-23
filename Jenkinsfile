@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
 	    maven "Maven"
-	    jdk "JDK17"
+	    jdk "JDK11"
 	}
     stages{
         stage('Fetch code') {
@@ -13,24 +13,8 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean install -DskipTests'
-            }
-            post {
-                success {
-                    echo "Now Archiving."
-                    archiveArtifacts artifacts: '**/*.war'
-                }
+                sh 'mvn install'
             }
         }
-        stage('Test'){
-            steps {
-                sh 'mvn test'
-            }
-
-        }
-
-        stage('Checkstyle Analysis'){
-            steps {
-                sh 'mvn checkstyle:checkstyle'
-            }
-        }
+    }          
+}    
